@@ -323,6 +323,9 @@ html.shadow::before {
   position: absolute;
   display: none;
   top: 50px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
   width: 800px;
   background: white;
   padding: 40px;
