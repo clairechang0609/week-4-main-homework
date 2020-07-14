@@ -37,43 +37,9 @@ let app = new Vue({
     // components: {},
     data () {
         return {
-            products: [
-                {
-                    id: 1586934917210,
-                    category: 'Lighting',
-                    title: '夜巡桌燈',
-                    origin_price: 10000,
-                    price: 8500,
-                    description: '直徑 13.5 x 高 24.5 公分',
-                    content: '手把不僅方便移動，同時也是美感造型之一。可以作為床頭燈、情境燈、或是取代蠟燭光源，營造浪漫氛圍。',
-                    is_enabled: true,
-                    unit: '盞',
-                    options: {
-                        brand: 'MENU'
-                    },
-                    imageUrl: [
-                        'https://shoplineimg.com/5cd8dc7015c0710001011ee2/5d5bc7beb19ace0014165345/800x.webp?source_format=jpg' 
-                    ]
-                }, {
-                    id: 1196934917910,
-                    category: 'Lighting',
-                    title: '封光吊燈',
-                    origin_price: 11900,
-                    price: 10000,
-                    description: '直徑 32.5 x 高 29.5 公分',
-                    content: '防眩光的霧面燈罩，不僅能夠照亮您的餐桌或是吧台，也能散發柔和的光線，溫暖整個空間。',
-                    is_enabled: true,
-                    unit: '盞',
-                    options: {
-                        brand: 'Muuto'
-                    },
-                    imageUrl: [
-                        'https://shoplineimg.com/5cd8dc7015c0710001011ee2/5d86c7208f9bfc3ebeef30c4/800x.webp?source_format=jpg'
-                    ]
-                }
-            ],
+            products: [],
             editProduct: {
-                options: {},
+                // options: {},
                 imageUrl: [],
             },
             newProduct: true,
@@ -94,29 +60,29 @@ let app = new Vue({
             const vm = this;
             const url = `${apiPath}${uuid}/admin/ec/products?page=${page}`;
             //預設帶入token
-            axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
+            axios.defaults.headers.common.Authorization = `Bearer ${vm.token}`;
             axios.get(url)
                 .then( response => {
-                    console.log(response.data);
-                    response.data.data.forEach(item => {
-                        vm.products.push({
-                            id: item.id,
-                            category: item.category,
-                            title: item.title,
-                            origin_price: item.origin_price,
-                            price: item.price,
-                            description: item.description,
-                            content: item.content,
-                            is_enabled: true,
-                            unit: item.unit,
-                            options: {
-                                brand: 'unknow'
-                            },
-                            imageUrl: item.imageUrl
-                        })
-                    });
+                    // response.data.data.forEach(item => {
+                    //     vm.products.push({
+                    //         id: item.id,
+                    //         category: item.category,
+                    //         title: item.title,
+                    //         origin_price: item.origin_price,
+                    //         price: item.price,
+                    //         description: item.description,
+                    //         content: item.content,
+                    //         is_enabled: true,
+                    //         unit: item.unit,
+                    //         options: {
+                    //             brand: 'unknow',
+                    //         },
+                    //         imageUrl: item.imageUrl
+                    //     })
+                    // });
+                    vm.products = response.data.data;
                     vm.pagination = response.data.meta.pagination;
-                    console.log(vm.pagination);
+                    console.log(vm.products);
                 })
                 .catch( error => {
                     console.log(error);
@@ -127,9 +93,9 @@ let app = new Vue({
                 case 'new': //新增商品
                     this.newProduct = true;
                     this.editProduct = {
-                        options: {
-                            brand: '',
-                        },
+                        // options: {
+                        //     brand: '',
+                        // },
                         imageUrl: [],
                     };
                     document.querySelector('.form-wrap').classList.add('show');
@@ -137,6 +103,7 @@ let app = new Vue({
                 case 'edit': //編輯
                     this.newProduct = false;
                     this.editProduct = JSON.parse(JSON.stringify(item)); //因添加options需深層複製
+                    this.getProduct(this.editProduct.id);
                     document.querySelector('.form-wrap').classList.add('show');
                     break;
                 case 'delete': //刪除
@@ -145,40 +112,67 @@ let app = new Vue({
             }
             document.querySelector('html').classList.add('shadow');
         },
+        getProduct(id) {
+            vm = this;
+            const url = `${apiPath}${uuid}/admin/ec/product/${id}`;
+            axios.get(url)
+                .then(response => {
+                    vm.editProduct = response.data.data;
+            })
+                .catch((error) => {
+                    console.log(error);
+            });
+        },
         updateProduct() { //確認新增商品
+            const vm = this;
+            let url = '';
+            let method = '';
+
             if (this.newProduct) { //新商品
-                this.editProduct.id = new Date().getTime();
-                this.products.push(this.editProduct);
-            } else {
-                this.products.forEach((item, i) => {
-                    if (item.id === this.editProduct.id) {
-                        this.$set(this.products, i, this.editProduct); //沒有預先定義的物件
-                    }
-                });
+                url = `${apiPath}${uuid}/admin/ec/product`;
+                method = 'post'
+            } else { //舊商品修改
+                url = `${apiPath}${uuid}/admin/ec/product/${vm.editProduct.id}`;
+                method = 'patch'
             }
-            this.editProduct = { options: {}, imageUrl: [], };
+
+            axios.defaults.headers.common.Authorization = `Bearer ${vm.token}`;
+
+            axios[method](url, vm.editProduct)
+                .then(() => {
+                    vm.getProducts();
+            })
+                .catch((error) => {
+                    console.log(error)
+            });
             document.querySelector('.form-wrap').classList.remove('show');
             document.querySelector('html').classList.remove('shadow');
         },
         deleteProduct() { //確認刪除
-            this.products.forEach((item, i) => {
-                if (item.id === this.editProduct.id) {
-                    this.products.splice(i, 1);
-                }
-            });
-            this.editProduct = { options: {}, imageUrl: [], };
+            const vm = this;
+            const url = `${apiPath}${uuid}/admin/ec/product/${vm.editProduct.id}`;
+            axios.defaults.headers['Authorization'] = `Bearer ${vm.token}`;
+
+            axios.delete(url)
+                .then( response => {
+                    vm.getProducts();
+                })
+                .catch( error => {
+                    console.log(error);
+                })
+
             document.querySelector('.delete-alert').classList.remove('show');
             document.querySelector('html').classList.remove('shadow');
         },
         closeForm() { //取消編輯
             document.querySelector('.form-wrap').classList.remove('show');
             document.querySelector('html').classList.remove('shadow');
-            this.editProduct = { options: {}, imageUrl: [], };
+            this.editProduct = { imageUrl: [], };
         },
         cancelDelete() { //取消刪除
             document.querySelector('.delete-alert').classList.remove('show');
             document.querySelector('html').classList.remove('shadow');
-            this.editProduct = { options: {}, imageUrl: [], };
+            this.editProduct = { imageUrl: [], };
         },
         uploadPic() { //使用上傳圖片方法
             const vm = this;
