@@ -444,17 +444,17 @@ html.shadow::before {
 }
 
 .product .delete-alert {
-  position: absolute;
+  position: fixed;
   display: none;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
   width: 400px;
-  top: 50px;
+  top: 50%;
   left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   background: white;
   padding: 20px;
   border: 1px solid #c4ac8a;
