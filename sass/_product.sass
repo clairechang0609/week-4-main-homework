@@ -1,0 +1,235 @@
+html
+	&.shadow
+		&::before
+            content: ''
+            display: block
+            position: fixed
+            top: 0
+            bottom: 0
+            left: 0
+            right: 0
+            background: rgba(0,0,0,0.5)
+            z-index: 999
+.topbar
+    display: flex
+    justify-content: space-between
+    align-items: flex-start
+    padding: 30px 50px
+    h1
+        .logo
+            display: block
+            width: 85px
+            height: 85px
+            background: url(../img/hurley-furniture-01.svg) no-repeat
+            text-indent: 101%
+            overflow: hidden
+            white-space: nowrap
+            text-decoration: none
+    .menu
+        display: flex
+        align-items: center
+        padding-top: 20px
+        li
+            a
+                padding: 20px 10px
+                text-decoration: none
+                color: $black
+                &:hover
+                    color: $dark-gray
+            button
+                margin-left: 10px
+                border: 1px solid $black
+                &:hover
+                    border: 1px solid $dark-beige
+.product
+    display: flex
+    flex-direction: column
+    width: 1000px
+    background: rgb(255,255,255)
+    margin: 0 auto 50px
+    padding: 50px
+    border: 1px solid rgb(196,172,138)
+    border-radius: 5px
+    .add-product
+        align-self: flex-end
+        margin-bottom: 30px
+        margin-right: 4px
+    table
+        width: 100%
+        text-align: center
+        border-spacing: 3px
+        border-collapse: separate
+        tr
+            th, td
+                line-height: 1.2
+                vertical-align: middle
+                margin: 10px
+            th
+                padding: 10px 5px
+                background: $black
+                color: rgb(255,255,255)
+                font-size: 13px
+                border-radius: 4px
+            td
+                padding: 15px 5px
+                background: rgb(255,255,255)
+                border-bottom: 1px solid #000
+                color: rgb(25,25,25)
+                font-size: 13px
+                .container
+                    display: flex
+                    justify-content: center
+                    cursor: pointer
+                    z-index: 0
+                .container input
+                    opacity: 0
+                    cursor: pointer
+                    height: 0
+                    width: 0
+                .checkmark
+                    position: relative
+                    height: 13px
+                    width: 13px
+                    border-radius: 3px
+                    border: 1px solid $black
+                .container input:checked ~ .checkmark
+                    background-color: $dark-beige
+                    border: 1px solid $dark-beige
+                .container input:checked ~ .checkmark::before,
+                .container input:checked ~ .checkmark::after
+                    display: block
+                .container .checkmark::before
+                    content: ''
+                    position: absolute
+                    display: none
+                    left: 2px
+                    top: 4px
+                    width: 0
+                    height: 5px
+                    border: solid $white
+                    border-width: 0 2px 2px 0
+                    -webkit-transform: rotate(-45deg)
+                    -ms-transform: rotate(-45deg)
+                    transform: rotate(-45deg)
+                .container .checkmark::after
+                    content: ''
+                    position: absolute
+                    display: none
+                    left: 6px
+                    top: 1px
+                    width: 0
+                    height: 8px
+                    border: solid $white
+                    border-width: 0 2px 2px 0
+                    -webkit-transform: rotate(45deg)
+                    -ms-transform: rotate(45deg)
+                    transform: rotate(45deg)
+    .form-wrap
+        position: absolute
+        display: none
+        top: 50px
+        width: 800px
+        background: rgb(255,255,255)
+        padding: 40px
+        margin-bottom: 50px
+        border: 1px solid rgb(196,172,138)
+        border-radius: 5px
+        z-index: 1000
+        &.show
+            display: block
+        .title-bar
+            display: flex
+            justify-content: space-between
+            align-items: center
+            padding-bottom: 10px
+            margin-bottom: 10px
+            border-bottom: 1px solid $black
+            h5
+                font-size: 20px
+                font-weight: 500
+            .close
+                background: transparent
+                font-size: 15px
+                &:hover
+                    color: rgb(150,150,150)
+                &:focus
+                    outline: none
+        .form
+            display: flex
+            flex-wrap: wrap
+            justify-content: space-between
+            align-items: flex-start
+            .pic
+                width: 40%
+            .content
+                width: 57%
+                display: flex
+                flex-wrap: wrap
+                justify-content: space-between
+                
+            img
+                padding-top: 20px
+            .input-group
+                width: 100%
+                display: flex
+                flex-direction: column
+                &.half
+                    width: 48%
+                label
+                    padding: 15px 0 10px
+            .checkbox-group
+                padding: 15px 0 10px
+        .submit-btns
+            width: 100%
+            display: flex
+            justify-content: flex-end
+            button
+                margin-left: 5px
+    .delete-alert
+        position: absolute
+        display: none
+        flex-direction: column
+        width: 400px
+        top: 50px
+        left: 50%
+        transform: translateX(-50%)
+        background: rgb(255,255,255)
+        padding: 20px
+        border: 1px solid rgb(196,172,138)
+        border-radius: 5px
+        z-index: 1000
+        &.show
+            display: flex
+        h5
+            font-size: 20px
+            font-weight: 500
+            padding-bottom: 10px
+            margin-bottom: 10px
+            border-bottom: 1px solid rgb(0,0,0)
+        p
+            padding: 10px 0 20px
+            span
+                color: $main-yellow
+                font-weight: 500
+        .cancel-btns
+            align-self: flex-end
+.pagination
+    display: flex
+    justify-content: center
+    align-items: center
+    padding-bottom: 50px
+    li
+        a
+            text-decoration: none
+            color: $dark-gray
+            padding: 10px
+            &:hover, &:focus
+                color: $black
+        &.disabled
+            a
+                pointer-events: none;
+                cursor: default;
+                opacity: 0.5;
+        &.active
+            a
+                color: $black

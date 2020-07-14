@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="sass/all.css">
+</head>
+<body>
+    <div class="wrap">
+        <div class="index" @keyup.enter="signin()">
+            <h3>登入後台</h3>
+            <input type="email" v-model="user.email" placeholder="email" required autofocus>
+            <input type="password" v-model="user.password" placeholder="password" required>
+            <button type="submit" @click.prevent="signin()">登入</button>
+            <p>© Hurley Furniture 2020</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>
