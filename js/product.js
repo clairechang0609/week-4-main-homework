@@ -65,7 +65,7 @@ let app = new Vue({
                 .then( response => {
                     vm.products = response.data.data;
                     vm.pagination = response.data.meta.pagination;
-                    console.log(vm.products);
+                    console.log(vm.products); //取不到description資料
                 })
                 .catch( error => {
                     console.log(error);
@@ -82,18 +82,36 @@ let app = new Vue({
                         imageUrl: [],
                     };
                     document.querySelector('.form-wrap').classList.add('show');
+                    document.querySelector('html').classList.add('shadow');
                     break;
                 case 'edit': //編輯
                     this.newProduct = false;
                     this.editProduct = JSON.parse(JSON.stringify(item)); //因添加options需深層複製
-                    console.log(this.editProduct);
+                    this.getSingleProduct(this.editProduct.id);
                     document.querySelector('.form-wrap').classList.add('show');
+                    document.querySelector('html').classList.add('shadow');
+                    break;
+                case 'enabled': //點擊enabled
+                    this.newProduct = false;
+                    this.editProduct = Object.assign({}, item);
+                    this.editProduct.enabled = this.editProduct.enabled ? false : true ;
+                    console.log(this.editProduct)
                     break;
                 case 'delete': //刪除
                     this.editProduct = Object.assign({}, item);
                     document.querySelector('.delete-alert').classList.add('show');
+                    document.querySelector('html').classList.add('shadow');
             }
-            document.querySelector('html').classList.add('shadow');
+        },
+        getSingleProduct(id) { //為了取得description資料
+            const vm = this;
+            const url = `${apiPath}${uuid}/admin/ec/product/${id}`;
+            axios.defaults.headers['Authorization'] = `Bearer ${vm.token}`;
+            axios.get(url)
+                .then((response) => {
+                    vm.editProduct = response.data.data;
+                    console.log(vm.editProduct); //取得到description資料(和68行比對)
+            });
         },
         updateProduct() { //確認新增商品
             const vm = this;

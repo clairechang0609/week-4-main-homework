@@ -37,7 +37,7 @@
                     <td>NT$ {{ item.price }}</td>
                     <td>
                         <label class="container">
-                            <input type="checkbox" v-model="item.enabled" id="showIt">
+                            <input type="checkbox" v-model="item.enabled" @click="openModal('enabled', item), updateProduct()" id="showIt">
                             <span class="checkmark"></span>
                             <p>&nbsp上架</p>
                         </label>
