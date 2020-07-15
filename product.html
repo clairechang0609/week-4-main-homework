@@ -22,7 +22,7 @@
                     <th width="10%">類別</th>
                     <th width="13%">圖片</th>
                     <th width="20%">品名</th>
-                    <!-- <th width="10%">品牌</th> -->
+                    <th width="10%">品牌</th>
                     <th width="11%">原價</th>
                     <th width="11%">售價</th>
                     <th width="10%">上架</th>
@@ -32,7 +32,7 @@
                     <td>{{ item.category }}</td>
                     <td><img :src="item.imageUrl[0]" alt=""></td>
                     <td>{{ item.title }}</td>
-                    <!-- <td>{{ item.options.brand }}</td> -->
+                    <td>{{ item.options.brand }}</td>
                     <td>NT$ {{ item.origin_price }}</td>
                     <td>NT$ {{ item.price }}</td>
                     <td>
@@ -70,10 +70,10 @@
                             <label for="title">品名</label>
                             <input type="text" id="title" v-model="editProduct.title" placeholder="請輸入品名">
                         </div>
-                        <!-- <div class="input-group">
+                        <div class="input-group">
                             <label for="brand">品牌</label>
                             <input type="text" id="brand" v-model="editProduct.options.brand" placeholder="請輸入品牌">
-                        </div> -->
+                        </div>
                         <div class="input-group half">
                             <label for="category">分類</label>
                             <input type="text" id="category" v-model="editProduct.category" placeholder="請輸入類別">

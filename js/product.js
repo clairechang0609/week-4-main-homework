@@ -39,7 +39,8 @@ let app = new Vue({
         return {
             products: [],
             editProduct: {
-                // options: {},
+                options: {
+                },
                 imageUrl: [],
             },
             newProduct: true,
@@ -63,23 +64,6 @@ let app = new Vue({
             axios.defaults.headers.common.Authorization = `Bearer ${vm.token}`;
             axios.get(url)
                 .then( response => {
-                    // response.data.data.forEach(item => {
-                    //     vm.products.push({
-                    //         id: item.id,
-                    //         category: item.category,
-                    //         title: item.title,
-                    //         origin_price: item.origin_price,
-                    //         price: item.price,
-                    //         description: item.description,
-                    //         content: item.content,
-                    //         is_enabled: true,
-                    //         unit: item.unit,
-                    //         options: {
-                    //             brand: 'unknow',
-                    //         },
-                    //         imageUrl: item.imageUrl
-                    //     })
-                    // });
                     vm.products = response.data.data;
                     vm.pagination = response.data.meta.pagination;
                     console.log(vm.products);
@@ -93,9 +77,9 @@ let app = new Vue({
                 case 'new': //新增商品
                     this.newProduct = true;
                     this.editProduct = {
-                        // options: {
-                        //     brand: '',
-                        // },
+                        options: {
+                            brand: '',
+                        },
                         imageUrl: [],
                     };
                     document.querySelector('.form-wrap').classList.add('show');
@@ -145,6 +129,8 @@ let app = new Vue({
                 .catch((error) => {
                     console.log(error)
             });
+
+            this.editProduct = { options: {}, imageUrl: [], };
             document.querySelector('.form-wrap').classList.remove('show');
             document.querySelector('html').classList.remove('shadow');
         },
@@ -160,19 +146,20 @@ let app = new Vue({
                 .catch( error => {
                     console.log(error);
                 })
-
+            
+            this.editProduct = { options: {}, imageUrl: [], };
             document.querySelector('.delete-alert').classList.remove('show');
             document.querySelector('html').classList.remove('shadow');
         },
         closeForm() { //取消編輯
             document.querySelector('.form-wrap').classList.remove('show');
             document.querySelector('html').classList.remove('shadow');
-            this.editProduct = { imageUrl: [], };
+            this.editProduct = { options: {}, imageUrl: [], };
         },
         cancelDelete() { //取消刪除
             document.querySelector('.delete-alert').classList.remove('show');
             document.querySelector('html').classList.remove('shadow');
-            this.editProduct = { imageUrl: [], };
+            this.editProduct = { options: {}, imageUrl: [], };
         },
         uploadPic() { //使用上傳圖片方法
             const vm = this;
