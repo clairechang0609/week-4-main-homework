@@ -39,8 +39,7 @@ let app = new Vue({
         return {
             products: [],
             editProduct: {
-                options: {
-                },
+                options: {},
                 imageUrl: [],
             },
             newProduct: true,
@@ -87,7 +86,7 @@ let app = new Vue({
                 case 'edit': //編輯
                     this.newProduct = false;
                     this.editProduct = JSON.parse(JSON.stringify(item)); //因添加options需深層複製
-                    this.getProduct(this.editProduct.id);
+                    console.log(this.editProduct);
                     document.querySelector('.form-wrap').classList.add('show');
                     break;
                 case 'delete': //刪除
@@ -95,17 +94,6 @@ let app = new Vue({
                     document.querySelector('.delete-alert').classList.add('show');
             }
             document.querySelector('html').classList.add('shadow');
-        },
-        getProduct(id) {
-            vm = this;
-            const url = `${apiPath}${uuid}/admin/ec/product/${id}`;
-            axios.get(url)
-                .then(response => {
-                    vm.editProduct = response.data.data;
-            })
-                .catch((error) => {
-                    console.log(error);
-            });
         },
         updateProduct() { //確認新增商品
             const vm = this;
